@@ -6,7 +6,7 @@ import { RestService } from "./rest.service";
 
 @Injectable()
 
-export class ProdctRepository implements OnInit{
+export class ProductRepository implements OnInit{
     
     private products: Product[] =[];
 

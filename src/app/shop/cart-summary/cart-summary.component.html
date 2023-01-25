@@ -1,0 +1,8 @@
+<div class="alert alert-success" *ngIf="cart.itemCount > 0" >
+    kartınızda {{ cart.itemCount }} adet ürün bulunmaktadır. <br />
+    Toplam {{ cart.total }} TL
+</div>
+
+<div class="alert alert-danger" *ngIf="cart.itemCount == 0" >
+    <span >Kartınızda henüz ürün yok. </span>
+  </div>

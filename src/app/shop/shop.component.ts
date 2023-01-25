@@ -1,34 +1,63 @@
-import { Component } from "@angular/core";
-import { Category } from "../model/category.model";
-import { CategoryRepository } from "../model/category.repository";
-import { Product } from "../model/product.model";
-import { ProdctRepository } from "../model/product.repository";
+import { Component } from '@angular/core';
+import { Cart } from '../model/cart.model';
+import { Category } from '../model/category.model';
+import { CategoryRepository } from '../model/category.repository';
+import { Product } from '../model/product.model';
+import { ProductRepository } from '../model/product.repository';
 
 @Component({
-    selector: 'shop',
-    templateUrl : 'shop.component.html',
-    styles : [` .pt-100 {padding-top:100px}`]
+  selector: 'shop',
+  templateUrl: 'shop.component.html',
+  styles: [
+    `
+      .pt-100 {
+        padding-top: 100px;
+      }
+    `,
+  ],
 })
-
 export class ShopComponent {
+  public selectedCategory: Category = null;
+  public productPerPage = 2;
+  public selectedPage = 1;
 
-    public selectedCategory:Category = null;
+  constructor(
+    private productRepository: ProductRepository,
+    private categoryRepository: CategoryRepository,
+    private cart: Cart
+  ) {}
 
-    constructor(
-                    private productRepository:ProdctRepository,
-                    private categoryRepository:CategoryRepository){ }
-    
-    get products(): Product[]{
-        return this.productRepository.getProducts(this.selectedCategory);
-    }
+  get products(): Product[] {
+    let index = (this.selectedPage - 1) * this.productPerPage;
+    return this.productRepository
+      .getProducts(this.selectedCategory)
+      .slice(index, index + this.productPerPage);
+  }
 
-    get categories(): Category[]{
-        return this.categoryRepository.getCategories();
-    }
+  get categories(): Category[] {
+    return this.categoryRepository.getCategories();
+  }
 
-    changeCategory(newCategory?: Category){
-        this.selectedCategory = newCategory;
-    }
+  get pageNumbers(): number[] {
+    return Array(
+      Math.ceil(
+        this.productRepository.getProducts(this.selectedCategory).length /
+          this.productPerPage
+      )
+    )
+      .fill(0)
+      .map((a, i) => i + 1);
+  }
+  changeCategory(newCategory?: Category) {
+    this.selectedPage = 1;
+    this.selectedCategory = newCategory;
+  }
 
+  changePage(page: number) {
+    this.selectedPage = page;
+  }
 
+  addProductToCart(product:Product){
+    this.cart.addItem(product);
+  }
 }

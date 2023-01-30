@@ -21,8 +21,8 @@
               <td>
                 <img
                   src="assets/img/{{ item.product.imageUrl }}"
-                  width="80"
                   alt=""
+                  width="80"
                 />
               </td>
               <td>{{ item.product.name }}</td>
@@ -31,14 +31,19 @@
                 <input
                   type="text"
                   class="form-control"
-                  style="width: 50px;"
+                  style="width: 50px"
                   [value]="item.quantity"
-                  (change)="cart.updateQuantity(item.product, $any($event.target).value)"
+                  (change)="
+                    cart.updateQuantity(item.product, $any($event.target).value)
+                  "
                 />
               </td>
               <td>{{ item.quantity * item.product.price }}</td>
               <td>
-                <button class="btn btn-danger btn-sm" (click)="cart.removeItem(item.product.id)">
+                <button
+                  class="btn btn-danger btn-sm"
+                  (click)="cart.removeItem(item.product.id)"
+                >
                   <i class="fa fa-times fa-fw"> </i>
                 </button>
               </td>
